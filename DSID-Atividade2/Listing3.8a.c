@@ -4,9 +4,10 @@
 #include <string.h>
 #include <netdb.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define PORT 5678
-main(int argc, char *argv[])
+main(argc, argv)
 char *argv[];
 int argc;
 /*

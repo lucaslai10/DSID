@@ -15,7 +15,7 @@ Listing3.2a.c - parent: subtasking using fork() and execl()
 	{
 		/* This block is ONLY executed by the subtask */
 		/* Child task replaces itself with disk image of child */
-		execl("/home/grifo/Desktop/DSID-Atividade2/Listing3.2b", "Listing3.2b", NULL);
+		execl("/home/grifo/Documents/DSID/DSID-Atividade2/l3.2b", "l3.2b", NULL);
 		printf("A successful execl() call will never return!\n");
 		exit(-1);
 	}
