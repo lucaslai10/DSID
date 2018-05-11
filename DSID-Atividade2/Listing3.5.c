@@ -172,7 +172,7 @@ Listing3.5.c - simultaneous handling of deposits and withdrawals
 			{
 				printf("ERROR: Insufficient funds!\n");
 			}
-			/* clear semaphore */
+/* clear semaphore */
 			buf.sem_op = 1;
 			semop(semid, (struct sembuf *) &buf, 1);
 		}

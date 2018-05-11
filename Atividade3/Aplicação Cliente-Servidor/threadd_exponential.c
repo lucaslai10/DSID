@@ -8,6 +8,9 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/signal.h>
+#include <string.h>
+#include <math.h>
+
 
 #define PORT 9876
 #define FALSE 0
@@ -26,26 +29,30 @@ void * work(void *ptr){
 	
 
 	
-	int thread_number= (int) ptr;
+	int thread_number= (intptr_t)ptr;
 	char buf[80];            /* socket receive buffer */
  
-	printf("working thread %d?\n",thread_number);	
+		
 	while(1){
 		
 		
 		if(disponivel[thread_number]==1){
 		//Threads Wakes up
 		/* receive an incoming query */
-		int valor; 	        
+		double valor; 	        
 		recv(clientes[thread_number], buf, sizeof(buf), 0);
-		//sscanf(buf, "%d", &valor);
+		sscanf(buf, "%lf", &valor);
 		
-		printf("Message received by thread %d",thread_number);
-		int count =0;
-		while(valor<1000){
+		printf("Message received by thread %d, processing number %lf \n",thread_number, valor);
+		/*int count =0;
+		while(valor<100000){
 			valor=valor+1;
 			count++;
-		}
+
+		}*/
+		valor = exp(valor);
+		sprintf(buf, "%lf", valor);
+		sleep(2);
 		send(clientes[thread_number],buf,strlen(buf)+1,0);
 		close(clientes[thread_number]);
 		  
@@ -55,7 +62,8 @@ void * work(void *ptr){
 
 		else{
 	
-		usleep(1);
+		sleep(0.5);
+		
 		}
 	}
 
@@ -68,7 +76,7 @@ void * work(void *ptr){
 
 int main(){
 int i;
-printf("Inicializando socket\n");
+
 //Extracted code from the book
    /*
     ** Listing7.4.c - Concurrent Server: Subtask Pool
@@ -115,27 +123,28 @@ printf("Inicializando socket\n");
     /* pre-establish subtask pool */
 
 //-----------------------------------------
-printf("inicializando threadz\n");
+
 
 for(i=0;i<5;i++){
 	pthread_t p;
+	int ident = i;
 	clientes[i]=-1;
 	disponivel[i]=0;
-	pthread_create(&p, NULL, &work,(void *) i);
+	pthread_create(&p, NULL, &work,(void *) (intptr_t)ident);
 }
 
 
-printf("main loop\n");
+
  
-listen(acc, 10);
+
 while(1){
-       	printf("runnando\n");
+       	
+	listen(acc, 5);
 	
-	printf("depois de listening\n");
 	cli = accept(acc, (struct sockaddr *) &sock, &socklen);
-	printf("accepted");        
+	       
 	if(cli!=0){
-	printf("recebi");
+	
 	for(i=0;i<5;i++){
 	if(disponivel[i]==0){
 		clientes[i]=cli;
