@@ -63,10 +63,10 @@ main(int argc, char *argv[])
 
       /* random integers 1 through 99 */
       random = rand() / (double) RAND_MAX;
-      jj = (int) ((double) (5.0) * random) + 1;
-      if(jj == 6)
-         jj = 5;
-      sprintf(buf, "./tmp/sample.txt %d", jj);
+      jj = (int) ((double) (99.0) * random) + 1;
+      if(jj == 100)
+         jj = 99;
+      sprintf(buf, "/home/chief/sample.txt %d", jj);
 
       if((pids[kk++]=fork()) == 0)
       {
